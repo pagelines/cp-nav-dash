@@ -247,8 +247,12 @@ class DMSNavDash_Walker_Nav_Menu extends Walker_Nav_Menu {
 
 	function display_element( $element, &$children_elements, $max_depth, $depth=0, $args, &$output ) {
 
+		if(!isset($this->topitemcount)) {
+			$this->topitemcount = 0;
+		}
+
 		if (empty($element->menu_item_parent) || $element->menu_item_parent == 0) {
-			$this->topitemcount++; //starts at null, ++ changes it to 1 for the first
+			$this->topitemcount++;
 			$element->title = sprintf('<span class="nav-dash-top-level-item">%s</span>', $element->title);
 			$element->classes[] = 'nav-dash-level-1 accordion-group nav-dash-top-level-group-'.$this->topitemcount;
 			//$element->attr_title = 'myattrtitle'.$element->attr_title;
