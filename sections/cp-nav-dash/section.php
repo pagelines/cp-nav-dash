@@ -53,11 +53,6 @@ class DMSNavDash extends PageLinesSection {
 	}
 
 
-	function section_persistent(){
-		//register_nav_menus( array( 'navdash_nav' => __( 'Nav Dash Section', 'navdash' ) ) );
-
-	}
-
 	function section_scripts(){
 		wp_enqueue_script('jquery');
 	}
@@ -75,7 +70,7 @@ class DMSNavDash extends PageLinesSection {
 		$toplevelbordercolor = pl_hashify($toplevelbordercolor);
 
 
-		if(!$this->opt('navdash_top_level_border_off'))
+		if(!$this->opt('navdash_top_level_border_off')) {
 		?>
 
         <style type="text/css">
@@ -83,6 +78,7 @@ class DMSNavDash extends PageLinesSection {
 				border-left: <?php echo $toplevelbordercolor; ?> solid 2px;
 			}
 		</style>
+		<?php } ?>
 
 		<script type="text/javascript">
 			jQuery(window).resize(function(){
@@ -148,7 +144,6 @@ class DMSNavDash extends PageLinesSection {
 	}
 
 	function section_template() {
-	plprint($this);
 
 		$menu = $this->opt('navdash_menu') ? $this->opt('navdash_menu') : '';
 		if(!$menu) {
@@ -158,7 +153,6 @@ class DMSNavDash extends PageLinesSection {
 		$hidecolerror = $this->opt('navdash_hide_col_error') ? true : false;
 
 		$menu_args = array(
-			//'theme_location' => 'navdash_nav',
 			'menu'			=> $menu,
 			'menu_class'	=> 'navdash-menu',
 			'echo'			=> false,
