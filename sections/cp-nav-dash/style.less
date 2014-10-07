@@ -7,6 +7,7 @@
 .section-cp-nav-dash{
 	.nav-dash-level-1 {
 		vertical-align: top;
+		padding-top: 5px;
 	}
 	.menu-item-has-children > .nav-dash-item {
 		//white-space: nowrap; //combines the parents' <a> and <i> into one line (not helpful if title was already too long though
@@ -21,21 +22,6 @@
 		padding-left: 4px;
 	}
 }
-
-/*
-.section-cp-nav-dash{
-	.nav-dash-top-level-item:after {
-		content: '';
-		position: absolute;
-		top: @baseFontSize * 1.29; //need to make responsive
-		background: @pl-link;
-		margin-left: -4px;
-		width: 2px;
-		height: @baseFontSize;
-		box-sizing: content-box;
-	}
-}
-*/
 
 @media (min-width: @resDesktop) {
 	.section-cp-nav-dash{
