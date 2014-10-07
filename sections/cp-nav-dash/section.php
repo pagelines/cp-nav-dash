@@ -182,7 +182,7 @@ class DMSNavDash extends PageLinesSection {
 			echo do_shortcode($errormessage);
 		}
 
-		$output = sprintf('<div class="nav-dash-wrap nav-dash-top-levels-%s">%s</div>', $toplevelcount, $menuoutput);
+		$output = sprintf('<nav role="navigation" class="nav-dash-wrap nav-dash-top-levels-%s">%s</nav>', $toplevelcount, $menuoutput);
 
 		echo $output;
 
