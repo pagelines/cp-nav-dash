@@ -2,7 +2,7 @@
 /*
 Section: DMS Nav Dash
 Author: TourKick (Clifford P)
-Description: Assign a WordPress menu and it'll automatically create the correct number of columns to display top-level and one child-level link lists.
+Description: Assign a WordPress menu and Nav Dash will automatically create the correct number of columns to display top-level and one child-level link lists.
 Class Name: DMSNavDash
 Version: 1.0
 Cloning: true
