@@ -1,3 +1,5 @@
+@navDashStackedTopPadding: 5px;
+
 .navDashColumn(@columns: 1, @marginleft: 0, @marginright: 1%, @margintop: 0, @marginbottom: 0) {
 	display: inline-block;
 	margin: @margintop @marginright @marginbottom @marginleft;
@@ -5,9 +7,11 @@
 }
 
 .section-cp-nav-dash{
+	.nav-dash-wrap {
+		margin-left: 1%;
+	}
 	.nav-dash-level-1 {
 		vertical-align: top;
-		padding-top: 5px;
 	}
 	.menu-item-has-children > .nav-dash-item {
 		//white-space: nowrap; //combines the parents' <a> and <i> into one line (not helpful if title was already too long though
@@ -28,68 +32,68 @@
 		.nav-dash-top-levels-2 .nav-dash-level-1 {
 			.navDashColumn(2);
 			&:first-child {
-				margin-left: 0;
-				margin-right: 0;
+				//margin-left: 0;
+				//margin-right: 0;
 			}
 		}
 		.nav-dash-top-levels-3 .nav-dash-level-1 {
 			.navDashColumn(3);
 			&:first-child {
-				margin-left: 0;
+				//margin-left: 0;
 			}
 		}
 		.nav-dash-top-levels-4 .nav-dash-level-1 {
 			.navDashColumn(4);
 			&:first-child {
-				margin-left: 0;
+				//margin-left: 0;
 			}
 		}
 		.nav-dash-top-levels-5 .nav-dash-level-1 {
 			.navDashColumn(5);
 			&:first-child {
-				margin-left: 0;
+				//margin-left: 0;
 			}
 		}
 		.nav-dash-top-levels-6 .nav-dash-level-1 {
 			.navDashColumn(6);
 			&:first-child {
-				margin-left: 0;
+				//margin-left: 0;
 			}
 		}
 		.nav-dash-top-levels-7 .nav-dash-level-1 {
 			.navDashColumn(7);
 			&:first-child {
-				margin-left: 0;
+				//margin-left: 0;
 			}
 		}
 		.nav-dash-top-levels-8 .nav-dash-level-1 {
 			.navDashColumn(8);
 			&:first-child {
-				margin-left: 0;
+				//margin-left: 0;
 			}
 		}
 		.nav-dash-top-levels-9 .nav-dash-level-1 {
 			.navDashColumn(9);
 			&:first-child {
-				margin-left: 0;
+				//margin-left: 0;
 			}
 		}
 		.nav-dash-top-levels-10 .nav-dash-level-1 {
 			.navDashColumn(10);
 			&:first-child {
-				margin-left: 0;
+				//margin-left: 0;
 			}
 		}
 		.nav-dash-top-levels-11 .nav-dash-level-1 {
 			.navDashColumn(11);
 			&:first-child {
-				margin-left: 0;
+				//margin-left: 0;
 			}
 		}
 		.nav-dash-top-levels-12 .nav-dash-level-1 {
 			.navDashColumn(12);
 			&:first-child {
-				margin-left: 0;
+				//margin-left: 0;
 			}
 		}
 	}
@@ -108,27 +112,35 @@
 		}
 		.nav-dash-top-levels-5 .nav-dash-level-1 {
 			.navDashColumn(3);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-6 .nav-dash-level-1 {
 			.navDashColumn(3);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-7 .nav-dash-level-1 {
 			.navDashColumn(4);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-8 .nav-dash-level-1 {
 			.navDashColumn(4);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-9 .nav-dash-level-1 {
 			.navDashColumn(3);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-10 .nav-dash-level-1 {
 			.navDashColumn(5);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-11 .nav-dash-level-1 {
 			.navDashColumn(4);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-12 .nav-dash-level-1 {
 			.navDashColumn(4);
+			padding-top: @navDashStackedTopPadding;
 		}
 	}
 }
@@ -140,33 +152,43 @@
 		}
 		.nav-dash-top-levels-3 .nav-dash-level-1 {
 			.navDashColumn(1);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-4 .nav-dash-level-1 {
 			.navDashColumn(2);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-5 .nav-dash-level-1 {
 			.navDashColumn(2);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-6 .nav-dash-level-1 {
 			.navDashColumn(2);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-7 .nav-dash-level-1 {
 			.navDashColumn(2);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-8 .nav-dash-level-1 {
 			.navDashColumn(2);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-9 .nav-dash-level-1 {
 			.navDashColumn(2);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-10 .nav-dash-level-1 {
 			.navDashColumn(2);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-11 .nav-dash-level-1 {
 			.navDashColumn(2);
+			padding-top: @navDashStackedTopPadding;
 		}
 		.nav-dash-top-levels-12 .nav-dash-level-1 {
 			.navDashColumn(2);
+			padding-top: @navDashStackedTopPadding;
 		}
 	}
 }
