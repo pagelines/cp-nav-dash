@@ -146,7 +146,7 @@ class DMSNavDash extends PageLinesSection {
 	function section_template() {
 
 		$menu = $this->opt('navdash_menu') ? $this->opt('navdash_menu') : '';
-		if(!$menu) {
+		if(!is_array( wp_get_nav_menu_items( $menu ) )) {
 			if(function_exists('blank_nav_fallback')){
 				return blank_nav_fallback();
 			} else {
