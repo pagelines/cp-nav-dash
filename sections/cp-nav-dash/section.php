@@ -13,11 +13,12 @@ Filter: nav, dual-width
 
 class DMSNavDash extends PageLinesSection {
 
-	function navdash_color_presets() {
-    	$colorpresets = array( // ALL HEX's LOWER-CASE
-			pl_hashify(pl_setting('bodybg'))	=> array('name' => __('PL Background Base Setting', 'navdash') ),
-			pl_hashify(pl_setting('text_primary'))	=> array('name' => __('PL Text Base Setting', 'navdash') ),
-			pl_hashify(pl_setting('linkcolor'))	=> array('name' => __('PL Link Base Setting', 'navdash') ),
+	//$this->
+	function tk_color_options() {
+    	$sectioncoloroptions = array( // ALL HEX's LOWER-CASE
+			pl_hash(pl_setting('bodybg'), '#ffffff')	=> array('name' => __('PL Background Base Setting', 'navdash') ),
+			pl_hash(pl_setting('text_primary'), '#000000')	=> array('name' => __('PL Text Base Setting', 'navdash') ),
+			pl_hash(pl_setting('linkcolor'), '#337eff')	=> array('name' => __('PL Link Base Setting', 'navdash') ),
 			'#fbfbfb'	=> array('name' => __('Light Gray', 'navdash') ),
 			'#bfbfbf'	=> array('name' => __('Medium Gray', 'navdash') ),
 			'#1abc9c'	=> array('name' => __('* Turquoise', 'navdash') ),
@@ -49,9 +50,27 @@ class DMSNavDash extends PageLinesSection {
 			'#f27a00'	=> array('name' => __('Yellowy-Orange', 'navdash') ),
 		);
 
-		return $colorpresets;
+		return $sectioncoloroptions;
 	}
 
+	//$this->
+	function tk_color_setter($colorpickerfield, $coloroptionfield, $colordefault = '') {
+		if( pl_check_color_hash($colorpickerfield) ) {
+			$setcolor = $colorpickerfield;
+		} elseif( pl_check_color_hash($coloroptionfield) ) {
+			$setcolor = $coloroptionfield;
+		} elseif( pl_check_color_hash($colordefault) ) {
+			$setcolor = $colordefault;
+		} else {
+			$setcolor = '';
+		}
+
+		if( pl_check_color_hash($setcolor) ) {
+			$setcolor = pl_hashify($setcolor);
+		}
+
+		return $setcolor;
+	}
 
 	function section_scripts(){
 		wp_enqueue_script('jquery');
@@ -60,17 +79,12 @@ class DMSNavDash extends PageLinesSection {
 	function section_head(){
 		$sectionid = '#cp-nav-dash' . $this->get_the_id();
 
-       	if( $this->opt('navdash_color_top_level_border_picker') ) {
-			$toplevelbordercolor = $this->opt('navdash_color_top_level_border_picker');
-		} elseif( $this->opt('navdash_color_top_level_border') ) {
-			$toplevelbordercolor = $this->opt('navdash_color_top_level_border');
-		} else {
-			$toplevelbordercolor = pl_setting('linkcolor');
-		}
-		$toplevelbordercolor = pl_hashify($toplevelbordercolor);
+		$toplevelbordercolor = $this->tk_color_setter(
+			$this->opt('navdash_color_top_level_border_picker'),
+			$this->opt('navdash_color_top_level_border'),
+			'#337EFF'); //DMS' default link color if not yet set somehow in global settings
 
-
-		if(!$this->opt('navdash_top_level_border_off')) {
+		if(!$this->opt('navdash_top_level_border_off') && pl_check_color_hash($toplevelbordercolor) ) {
 		?>
 
         <style type="text/css">
@@ -116,7 +130,7 @@ class DMSNavDash extends PageLinesSection {
 						'key'	=> 'navdash_color_top_level_border',
 						'type' 	=> 'select',
 						'label'	=> __('Top Level Item Border Color<br>Default: <span class="pl-link">PL Link Base Setting</span><br>Color picker drop-down options beginning with an <strong>asterisk (*)</strong> are from <a href="http://flatuicolors.com/" target="_blank">FlatUIcolors.com</a>', 'navdash'),
-						'opts' => $this->navdash_color_presets(),
+						'opts' => $this->tk_color_options(),
 					),
 		            array(
 		                'key'		=> 'navdash_color_top_level_border_picker',
