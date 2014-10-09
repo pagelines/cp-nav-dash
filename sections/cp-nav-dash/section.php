@@ -16,9 +16,9 @@ class DMSNavDash extends PageLinesSection {
 	//$this->
 	function tk_color_options() {
     	$sectioncoloroptions = array( // ALL HEX's LOWER-CASE
-			pl_hash(pl_setting('bodybg'), '#ffffff')	=> array('name' => __('PL Background Base Setting', 'navdash') ),
-			pl_hash(pl_setting('text_primary'), '#000000')	=> array('name' => __('PL Text Base Setting', 'navdash') ),
-			pl_hash(pl_setting('linkcolor'), '#337eff')	=> array('name' => __('PL Link Base Setting', 'navdash') ),
+			'bodybg'	=> array('name' => __('PL Background Base Setting', 'navdash') ),
+			'text_primary'	=> array('name' => __('PL Text Base Setting', 'navdash') ),
+			'linkcolor'	=> array('name' => __('PL Link Base Setting', 'navdash') ),
 			'#fbfbfb'	=> array('name' => __('Light Gray', 'navdash') ),
 			'#bfbfbf'	=> array('name' => __('Medium Gray', 'navdash') ),
 			'#1abc9c'	=> array('name' => __('* Turquoise', 'navdash') ),
@@ -55,6 +55,18 @@ class DMSNavDash extends PageLinesSection {
 
 	//$this->
 	function tk_color_setter($colorpickerfield, $coloroptionfield, $colordefault = '') {
+		if( !preg_match('/^#/', $coloroptionfield) ) { //does not begin with a hash
+			$coloroptionfield = pl_check_color_hash(pl_setting($coloroptionfield)) ? pl_setting($coloroptionfield) : $coloroptionfield;
+
+			if( $coloroptionfield == 'bodybg' ) {
+				$coloroptionfield = '#FFFFFF';
+			} elseif( $coloroptionfield == 'text_primary' ) {
+				$coloroptionfield = '#000000';
+			} elseif( $coloroptionfield == 'linkcolor' ) {
+				$coloroptionfield = '#337EFF';
+			}
+		}
+
 		if( pl_check_color_hash($colorpickerfield) ) {
 			$setcolor = $colorpickerfield;
 		} elseif( pl_check_color_hash($coloroptionfield) ) {
@@ -84,23 +96,59 @@ class DMSNavDash extends PageLinesSection {
 			$this->opt('navdash_color_top_level_border'),
 			'#337EFF'); //DMS' default link color if not yet set somehow in global settings
 
-		if(!$this->opt('navdash_top_level_border_off') && pl_check_color_hash($toplevelbordercolor) ) {
-		?>
+		$toplinkscolor = $this->tk_color_setter(
+			$this->opt('navdash_color_top_links_picker'),
+			$this->opt('navdash_color_top_links'));
 
-        <style type="text/css">
-			<?php echo $sectionid; ?> .nav-dash-top-level-item {
-				border-left: <?php echo $toplevelbordercolor; ?> solid 2px;
+		$togglercolor = $this->tk_color_setter(
+			$this->opt('navdash_color_toggler_picker'),
+			$this->opt('navdash_color_toggler'));
+
+		$childlinkscolor = $this->tk_color_setter(
+			$this->opt('navdash_color_child_links_picker'),
+			$this->opt('navdash_color_child_links'));
+
+		$borderyes = ( !$this->opt('navdash_top_level_border_off') && pl_check_color_hash($toplevelbordercolor) ) ? true : false;
+		$toplinksyes = pl_check_color_hash($toplinkscolor);
+		$toggleryes = pl_check_color_hash($togglercolor);
+		$childlinksyes = pl_check_color_hash($childlinkscolor);
+
+		if($borderyes || $toplinksyes || $toggleryes || $childlinksyes) {
+			$styleoutput = '<style type="text/css">';
+
+			if($borderyes) {
+				$styleoutput .= sprintf('%s .nav-dash-top-level-item { border-left: %s solid 2px; }', $sectionid, $toplevelbordercolor);
+				$styleoutput .= "\n"; //must use double-quotes -- http://php.net/manual/en/language.types.string.php#language.types.string.syntax.double
 			}
-		</style>
-		<?php } ?>
+			if($toplinksyes) {
+				$styleoutput .= sprintf('%s a .nav-dash-top-level-item { color: %s; }', $sectionid, $toplinkscolor);
+				$styleoutput .= "\n"; //must use double-quotes
+			}
+			if($toggleryes) {
+				$styleoutput .= sprintf('%s .nav-dash-toggler { color: %s; }', $sectionid, $togglercolor);
+				$styleoutput .= "\n"; //must use double-quotes
+			}
+			if($childlinksyes) {
+				$styleoutput .= sprintf('%s a .nav-dash-child-level-item { color: %s; }', $sectionid, $childlinkscolor);
+				$styleoutput .= "\n"; //must use double-quotes
+			}
 
+			$styleoutput .= '</style>';
+			echo $styleoutput;
+		}
+
+
+
+		$togglerwide = $this->opt('navdash_toggler_show_wide');
+
+		?>
 		<script type="text/javascript">
 			jQuery(window).resize(function(){
 				if( window.matchMedia('(max-width: 480px)').matches ) {
-					jQuery('<?php echo $sectionid; ?> .nav-dash-toggler').show();
+					<?php if(!$togglerwide) { ?> jQuery('<?php echo $sectionid; ?> .nav-dash-toggler').show(); <?php } ?>
 					jQuery('<?php echo $sectionid; ?> .sub-menu.in.collapse').removeClass('in');
 				} else {
-					jQuery('<?php echo $sectionid; ?> .nav-dash-toggler').hide();
+					<?php if(!$togglerwide) { ?> jQuery('<?php echo $sectionid; ?> .nav-dash-toggler').hide(); <?php } ?>
 					jQuery('<?php echo $sectionid; ?> .sub-menu.collapse').addClass('in');
 				}
 			});
@@ -127,6 +175,11 @@ class DMSNavDash extends PageLinesSection {
 						'help'	=> __( 'Nav Dash works with WordPress menus and can display top-level/parents and 2nd-level/children menu items.<br><strong>3rd-level/grandchildren and below will not appear.</strong><br>Nav Dash will automatically put your menu items into columns, but <strong>ONLY IF your menu has 12 or fewer top-level menu items.</strong><br>If you do not (e.g. 13 top-level menu items), your menu will not appear in columns.', 'navdash' ),
 					),
 					array(
+						'key'	=> 'navdash_top_level_border_off',
+						'type'	=> 'check',
+						'label'	=> __( 'Turn Off Top Level Border?', 'navdash' ),
+					),
+					array(
 						'key'	=> 'navdash_color_top_level_border',
 						'type' 	=> 'select',
 						'label'	=> __('Top Level Item Border Color<br>Default: <span class="pl-link">PL Link Base Setting</span><br>Color picker drop-down options beginning with an <strong>asterisk (*)</strong> are from <a href="http://flatuicolors.com/" target="_blank">FlatUIcolors.com</a>', 'navdash'),
@@ -140,14 +193,53 @@ class DMSNavDash extends PageLinesSection {
 		                'help'		=> __( 'Color Picker overrides Drop-Down Selection, if both are entered for the same setting.', 'navdash' ),
 		            ),
 					array(
-						'key'	=> 'navdash_top_level_border_off',
-						'type'	=> 'check',
-						'label'	=> __( 'Turn Off Top Level Border?', 'navdash' ),
+						'key'	=> 'navdash_color_top_links',
+						'type' 	=> 'select',
+						'label'	=> __('Link Color for Top-Level Items<br>Default: <span class="pl-link">PL Link Base Setting</span>', 'navdash'),
+						'opts' => $this->tk_color_options(),
 					),
+		            array(
+		                'key'		=> 'navdash_color_top_links_picker',
+		                'type'		=> 'color',
+		                'label'		=> __( 'Link Color for Top-Level Items', 'navdash' ),
+		                'default'	=> '',
+		                'help'		=> __( 'Color Picker overrides Drop-Down Selection, if both are entered for the same setting.', 'navdash' ),
+		            ),
+					array(
+						'key'	=> 'navdash_toggler_show_wide',
+						'type'	=> 'check',
+						'label'	=> __( 'Show "Toggler" even if browser width is greater than 480px?', 'navdash' ),
+					),
+					array(
+						'key'	=> 'navdash_color_toggler',
+						'type' 	=> 'select',
+						'label'	=> __('Toggler Color<br>Default: PL Text Base Color Setting', 'navdash'),
+						'opts' => $this->tk_color_options(),
+					),
+		            array(
+		                'key'		=> 'navdash_color_toggler_picker',
+		                'type'		=> 'color',
+		                'label'		=> __( 'Toggler Color', 'navdash' ),
+		                'default'	=> '',
+		                'help'		=> __( 'Color Picker overrides Drop-Down Selection, if both are entered for the same setting.', 'navdash' ),
+		            ),
+					array(
+						'key'	=> 'navdash_color_child_links',
+						'type' 	=> 'select',
+						'label'	=> __('Link Color for Child-Level Items<br>Default: <span class="pl-link">PL Link Base Setting</span>', 'navdash'),
+						'opts' => $this->tk_color_options(),
+					),
+		            array(
+		                'key'		=> 'navdash_color_child_links_picker',
+		                'type'		=> 'color',
+		                'label'		=> __( 'Link Color for Child-Level Items', 'navdash' ),
+		                'default'	=> '',
+		                'help'		=> __( 'Color Picker overrides Drop-Down Selection, if both are entered for the same setting.', 'navdash' ),
+		            ),
 					array(
 						'key'	=> 'navdash_hide_col_error',
 						'type'	=> 'check',
-						'label'	=> __( 'Hide Error Message about too many top-level items to create columns?<br>(only shown to Contributors and above)', 'navdash' ),
+						'label'	=> __( 'Hide error message about too many top-level items to be able to create columns automatically?<br>(only shown to Contributors and above and only if more than 12 top-level items in chosen menu)', 'navdash' ),
 					),
 				)
 			)
