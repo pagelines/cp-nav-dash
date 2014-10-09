@@ -147,7 +147,11 @@ class DMSNavDash extends PageLinesSection {
 
 		$menu = $this->opt('navdash_menu') ? $this->opt('navdash_menu') : '';
 		if(!$menu) {
-			return '';
+			if(function_exists('blank_nav_fallback')){
+				return blank_nav_fallback();
+			} else {
+				return '';
+			}
 		}
 
 		$hidecolerror = $this->opt('navdash_hide_col_error') ? true : false;
